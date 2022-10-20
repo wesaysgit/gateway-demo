@@ -1,4 +1,4 @@
-package com.example.comfig;
+package com.example.config;
 
 import com.example.filter.CustomGatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
