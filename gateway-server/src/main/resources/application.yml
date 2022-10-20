@@ -1,0 +1,37 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    gateway:
+#      discovery:
+#        locator:
+#          # 是否与服务发现组件进行结合，通过serviceId转发到具体服务实例
+#          enabled: true # 是否开启基于服务发现的路由规则
+#          lower-case-service-id: true #是否将服务名称转小写
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/**
+#            - Path=/product/**,/api-gateway/**
+          filters:
+            #将 /api/123/product/1 重写为/product/1
+            - StripPrefix=2
+
+            #将 /api-gateway/product/1 重写为/product/1
+            #- RewritePath=/api-gateway(?<segment>/?.*), $\{segment}
+
+            #将 /1 重写为/product/1
+            #- PrefixPath=/product
+
+
+eureka:
+  instance:
+    prefer-ip-address: true #是否使用ip地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
