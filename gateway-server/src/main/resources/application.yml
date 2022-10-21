@@ -4,6 +4,18 @@ server:
 spring:
   application:
     name: gateway-server
+  redis:
+    timeout: 10000
+    host: localhost
+    port: 6379
+    password:
+    database: 0
+    lettuce:
+      pool:
+        max-active: 1024
+        max-wait: 10000
+        max-idle: 200
+        min-idle: 5
   cloud:
     gateway:
 #      discovery:
@@ -15,11 +27,16 @@ spring:
         - id: product-service
           uri: lb://product-service
           predicates:
-            - Path=/**
+            - Path=/product/**
 #            - Path=/product/**,/api-gateway/**
           filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 2
+                key-resolver: "#{@pathKeyResolver}" #使用spel 表达式按名称引用 bean
             #将 /api/123/product/1 重写为/product/1
-            - StripPrefix=2
+            #- StripPrefix=2
 
             #将 /api-gateway/product/1 重写为/product/1
             #- RewritePath=/api-gateway(?<segment>/?.*), $\{segment}
