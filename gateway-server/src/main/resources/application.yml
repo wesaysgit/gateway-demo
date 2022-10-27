@@ -18,11 +18,11 @@ spring:
         min-idle: 5
   cloud:
     gateway:
-#      discovery:
-#        locator:
-#          # 是否与服务发现组件进行结合，通过serviceId转发到具体服务实例
-#          enabled: true # 是否开启基于服务发现的路由规则
-#          lower-case-service-id: true #是否将服务名称转小写
+      discovery:
+        locator:
+          # 是否与服务发现组件进行结合，通过serviceId转发到具体服务实例
+          enabled: true # 是否开启基于服务发现的路由规则
+          lower-case-service-id: true #是否将服务名称转小写
       routes:
         - id: product-service
           uri: lb://product-service

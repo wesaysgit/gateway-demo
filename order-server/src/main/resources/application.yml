@@ -12,3 +12,23 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/,http://localhost:8761/eureka/
+
+jetcache:
+  areaInCacheName: false
+  local:
+    default:
+      keyConvertor: fastjson
+      type: linkedhashmap
+  remote:
+    default:
+      host: 127.0.0.1
+      keyConvertor: fastjson
+      poolConfig:
+        maxIdle: 20
+        maxTotal: 50
+        minIdle: 5
+      port: 6379
+      type: redis
+      valueDecoder: java
+      valueEncoder: java
+  statIntervalMinutes: 15
